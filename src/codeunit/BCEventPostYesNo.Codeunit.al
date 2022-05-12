@@ -1,4 +1,4 @@
-/*codeunit 50635 "BC Event-Post (Yes/No)"
+codeunit 50635 "BC Event-Post (Yes/No)"
 {
     TableNo = "BC Event Header";
     EventSubscriberInstance = Manual;
@@ -123,75 +123,74 @@
         exit(true);
     end;
 
-procedure Preview(var SalesHeader: Record "Sales Header")
-var
-    SalesPostYesNo: Codeunit "Sales-Post (Yes/No)";
-    GenJnlPostPreview: Codeunit "Gen. Jnl.-Post Preview";
-begin
-    BindSubscription(SalesPostYesNo);
-    GenJnlPostPreview.Preview(SalesPostYesNo, SalesHeader);
-end;
-
-[IntegrationEvent(false, false)]
-local procedure OnAfterPost(var EventHeader: Record "BC Event Header")
-begin
-end;
-
-[IntegrationEvent(false, false)]
-local procedure OnAfterConfirmPost(var EventHeader: Record "BC Event Header")
-begin
-end;
-
-[EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Preview", 'OnRunPreview', '', false, false)]
-local procedure OnRunPreview(var Result: Boolean; Subscriber: Variant; RecVar: Variant)
-var
-    SalesHeader: Record "Sales Header";
-    SalesPost: Codeunit "Sales-Post";
-begin
-    with SalesHeader do begin
-        Copy(RecVar);
-        Receive := "Document Type" = "Document Type"::"Return Order";
-        Ship := "Document Type" in ["Document Type"::Order, "Document Type"::Invoice, "Document Type"::"Credit Memo"];
-        Invoice := true;
+    procedure Preview(var SalesHeader: Record "Sales Header")
+    var
+        SalesPostYesNo: Codeunit "Sales-Post (Yes/No)";
+        GenJnlPostPreview: Codeunit "Gen. Jnl.-Post Preview";
+    begin
+        BindSubscription(SalesPostYesNo);
+        GenJnlPostPreview.Preview(SalesPostYesNo, SalesHeader);
     end;
 
-    OnRunPreviewOnAfterSetPostingFlags(SalesHeader);
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterPost(var EventHeader: Record "BC Event Header")
+    begin
+    end;
 
-    SalesPost.SetPreviewMode(true);
-    Result := SalesPost.Run(SalesHeader);
-end;
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterConfirmPost(var EventHeader: Record "BC Event Header")
+    begin
+    end;
 
-[IntegrationEvent(false, false)]
-local procedure OnRunPreviewOnAfterSetPostingFlags(var SalesHeader: Record "Sales Header")
-begin
-end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Preview", 'OnRunPreview', '', false, false)]
+    local procedure OnRunPreview(var Result: Boolean; Subscriber: Variant; RecVar: Variant)
+    var
+        SalesHeader: Record "Sales Header";
+        SalesPost: Codeunit "Sales-Post";
+    begin
+        with SalesHeader do begin
+            Copy(RecVar);
+            Receive := "Document Type" = "Document Type"::"Return Order";
+            Ship := "Document Type" in ["Document Type"::Order, "Document Type"::Invoice, "Document Type"::"Credit Memo"];
+            Invoice := true;
+        end;
 
-[IntegrationEvent(false, false)]
-local procedure OnBeforeConfirmPost(var EventHeader: Record "BC Event Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean)
-begin
-end;
+        OnRunPreviewOnAfterSetPostingFlags(SalesHeader);
 
-[IntegrationEvent(false, false)]
-local procedure OnBeforeConfirmSalesPost(var EventHeader: Record "BC Event Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
-begin
-end;
+        SalesPost.SetPreviewMode(true);
+        Result := SalesPost.Run(SalesHeader);
+    end;
 
-[IntegrationEvent(false, false)]
-local procedure OnBeforeOnRun(var EventHeader: Record "BC Event Header")
-begin
-end;
+    [IntegrationEvent(false, false)]
+    local procedure OnRunPreviewOnAfterSetPostingFlags(var SalesHeader: Record "Sales Header")
+    begin
+    end;
 
-[IntegrationEvent(false, false)]
-local procedure OnBeforeRunSalesPost(var EventHeader: Record "BC Event Header"; var IsHandled: Boolean; var SuppressCommit: Boolean)
-begin
-end;
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeConfirmPost(var EventHeader: Record "BC Event Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean)
+    begin
+    end;
 
-[IntegrationEvent(false, false)]
-local procedure OnConfirmPostOnBeforeSetSelection(var EventHeader: Record "BC Event Header")
-begin
-end;
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeConfirmSalesPost(var EventHeader: Record "BC Event Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeOnRun(var EventHeader: Record "BC Event Header")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeRunSalesPost(var EventHeader: Record "BC Event Header"; var IsHandled: Boolean; var SuppressCommit: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnConfirmPostOnBeforeSetSelection(var EventHeader: Record "BC Event Header")
+    begin
+    end;
 
 
 
 }
-*/
